@@ -28,7 +28,7 @@ add_library(midirender_static STATIC
 set_target_properties(midirender_static PROPERTIES OUT_NAME "midirender_static")
 
 
-add_executable(midirender main.cpp)
+add_executable(midirender renderer.cpp)
 target_link_libraries(midirender midirender_static)
 
 
