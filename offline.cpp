@@ -60,7 +60,10 @@ namespace mgnr {
             if (n->info[0] == '@')
                 return;
         }
-        tsf_channel_note_on(soundfont, c, n->tone, n->volume / 128.0);
+        
+        if(soundfont){
+            tsf_channel_note_on(soundfont, c, n->tone, n->volume / 128.0);
+        }
     }
 
     void offline::onNoteOff(note *n, int c) {
@@ -68,11 +71,15 @@ namespace mgnr {
             if (n->info[0] == '@')
                 return;
         }
-        tsf_channel_note_off(soundfont, c, n->tone);
+        if(soundfont){
+            tsf_channel_note_off(soundfont, c, n->tone);
+        }
     }
 
     void offline::onSetChannelIns(int c, int ins) {
-        tsf_channel_set_presetnumber(soundfont, c, ins);
+        if(soundfont){
+            tsf_channel_set_presetnumber(soundfont, c, ins);
+        }
     }
 
     long offline::getTime() {
@@ -86,8 +93,14 @@ namespace mgnr {
         tsf_channel_set_bank_preset(soundfont, 9, 128, 0);
     }
 
+    offline::offline() {
+        soundfont = nullptr;
+    }
+
     offline::~offline() {
-        tsf_close(soundfont);
+        if(soundfont){
+            tsf_close(soundfont);
+        }
     }
 
     bool offline::renderStep(float *buffer) {
@@ -99,7 +112,10 @@ namespace mgnr {
             playStart();
         }
         playStep();
-        tsf_render_float(soundfont, buffer, 64, 0);
+        
+        if(soundfont){
+            tsf_render_float(soundfont, buffer, 64, 0);
+        }
         nowTime_point += 64;
         return noteTimeMax > lookAtX;
     }

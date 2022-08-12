@@ -19,6 +19,8 @@ namespace mgnr {
     public:
         offline(const char *sf, int sampleRate = 44100);
 
+        offline();
+
         ~offline();
 
         void rebuildNoteLen() override;
